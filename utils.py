@@ -40,6 +40,16 @@ def setup_logging():
     return logger
 
 def discord_timestamp_from_id(snowflake_id: str) -> str:
+    """
+    Converte ID do Discord (snowflake) para timestamp legível
+    
+    Args:
+        snowflake_id: ID único do Discord no formato snowflake
+        
+    Returns:
+        String com data/hora no formato 'YYYY-MM-DD HH:MM:SS UTC'
+        ou 'Desconhecido' em caso de erro
+    """
     try:
         # Fórmula para extrair timestamp do snowflake ID
         timestamp_ms = (int(snowflake_id) >> 22) + 1420070400000
@@ -50,7 +60,8 @@ def discord_timestamp_from_id(snowflake_id: str) -> str:
 
 class CacheManager:
     """
-    Gerenciando cache para melhorar performance
+    Gerenciador de cache para melhorar performance
+    Armazena dados temporários como canais e informações de usuário
     """
     
     def __init__(self, cache_dir: Path = CACHE_DIR):
@@ -62,6 +73,17 @@ class CacheManager:
         return self.cache_dir / f"{key}.pkl"
     
     def save_cache(self, key: str, data: Any, max_age_minutes: int = 30) -> bool:
+        """
+        Salva dados no cache com tempo de expiração
+        
+        Args:
+            key: Chave única para identificar os dados
+            data: Dados a serem armazenados
+            max_age_minutes: Tempo de expiração em minutos
+            
+        Returns:
+            True se salvou com sucesso, False em caso de erro
+        """
         try:
             cache_data = {
                 'timestamp': time.time(),
@@ -76,6 +98,15 @@ class CacheManager:
             return False
     
     def load_cache(self, key: str) -> Optional[Any]:
+        """
+        Carrega dados do cache se não estiverem expirados
+        
+        Args:
+            key: Chave única dos dados buscados
+            
+        Returns:
+            Dados armazenados ou None se expirados/não existirem
+        """
         try:
             cache_file = self.get_cache_file(key)
             if not cache_file.exists():
@@ -95,6 +126,12 @@ class CacheManager:
             return None
     
     def clear_cache(self, key: str = None):
+        """
+        Limpa cache específico ou todos os caches
+        
+        Args:
+            key: Chave específica para limpar ou None para limpar tudo
+        """
         try:
             if key:
                 self.get_cache_file(key).unlink(missing_ok=True)
@@ -107,10 +144,10 @@ class CacheManager:
 
 def validate_date_format(date_str: str) -> bool:
     """
-    Valida se a string ta em YYYY-MM-DD
+    Valida se string está no formato de data YYYY-MM-DD
     
     Args:
-        date_str: String pra validar
+        date_str: String a ser validada
         
     Returns:
         True se formato é válido, False caso contrário
@@ -123,7 +160,7 @@ def validate_date_format(date_str: str) -> bool:
 
 def format_file_size(bytes_size: int) -> str:
     """
-    Formata tamanho de arquivo em formato legível
+    Formata tamanho de arquivo em formato legível para humanos
     
     Args:
         bytes_size: Tamanho em bytes
