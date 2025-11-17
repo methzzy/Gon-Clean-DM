@@ -14,6 +14,5 @@ THEME = {
     "appear": "dark",     
     "color": "dark-blue"  
 }
-
 # Criar diretório de cache se não existir
 CACHE_DIR.mkdir(exist_ok=True)
