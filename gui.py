@@ -563,7 +563,7 @@ class GonCleanDMGUI(ctk.CTk):
         devtext = (
             "Criador: methzzy (Gon)\n"
             "GitHub: https://github.com/methzzy\n"
-            "Telegram: @methzzy\n\n"
+            "Telegram: @feicoes\n\n"
             "Ferramenta para remover, fazer backup e gerenciar\n"
             "mensagens do Discord via DM/Grupo com segurança."
         )
